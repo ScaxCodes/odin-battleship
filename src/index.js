@@ -15,11 +15,7 @@ function createShip(size) {
     },
   };
 }
-/*
-Gameboards should have a receiveAttack function that takes a pair of coordinates,
-determines whether or not the attack hit a ship and then sends the ‘hit’ function
-to the correct ship, or records the coordinates of the missed shot.
-*/
+
 function createBoard() {
   return {
     grid: [
@@ -50,6 +46,15 @@ function createBoard() {
         this.grid[x][y] = "X";
         console.log("Miss!");
       }
+    },
+    allShipsSunken: function () {
+      const fieldsWithShips = this.grid
+        .flat()
+        .filter((field) => typeof field === "object");
+      for (const fieldWithShip of fieldsWithShips) {
+        if (fieldWithShip.length > fieldWithShip.hitsCounter) return false;
+      }
+      return true;
     },
   };
 }
@@ -90,4 +95,13 @@ function testReceiveAttack() {
   console.log(board.grid);
 }
 
-testReceiveAttack();
+function testAllShipsSunken() {
+  const board = createBoard();
+  board.placeShip([
+    { x: 5, y: 6 },
+    { x: 5, y: 7 },
+  ]);
+  board.receiveAttack({ x: 5, y: 6 });
+  // board.receiveAttack({ x: 5, y: 7 });
+  console.log(board.allShipsSunken());
+}
