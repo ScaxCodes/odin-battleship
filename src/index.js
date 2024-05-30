@@ -1,63 +1,7 @@
 import "./normalize.css";
 import "./styles.css";
 
-function createShip(size) {
-  return {
-    length: size,
-    hitsCounter: 0,
-    sunken: false,
-    hit: function () {
-      this.hitsCounter++;
-      console.log("Hit added to ship...");
-    },
-    isSunk: function () {
-      return this.length <= this.hitsCounter;
-    },
-  };
-}
-
-function createBoard() {
-  return {
-    grid: [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ],
-    placeShip: function (coordsArray) {
-      const ship = createShip(coordsArray.length);
-      coordsArray.forEach((coord) => {
-        this.grid[coord.x][coord.y] = ship;
-      });
-      console.log("Ship placed...");
-    },
-    receiveAttack: function ({ x, y }) {
-      const selectedField = this.grid[x][y];
-      if (typeof selectedField === "object") {
-        selectedField.hit();
-        console.log("Hit!");
-      } else {
-        this.grid[x][y] = "X";
-        console.log("Miss!");
-      }
-    },
-    allShipsSunken: function () {
-      const fieldsWithShips = this.grid
-        .flat()
-        .filter((field) => typeof field === "object");
-      for (const fieldWithShip of fieldsWithShips) {
-        if (fieldWithShip.length > fieldWithShip.hitsCounter) return false;
-      }
-      return true;
-    },
-  };
-}
+import { createShip, createBoard, createPlayer } from "./factories.js";
 
 function testShipCreation() {
   const ship = createShip(3);
@@ -104,4 +48,11 @@ function testAllShipsSunken() {
   board.receiveAttack({ x: 5, y: 6 });
   // board.receiveAttack({ x: 5, y: 7 });
   console.log(board.allShipsSunken());
+}
+
+function testPlayerCreation() {
+  const axel = createPlayer();
+  console.log(axel);
+  const npc = createPlayer("computer");
+  console.log(npc);
 }
