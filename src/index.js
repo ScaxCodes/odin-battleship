@@ -70,6 +70,18 @@ for (let i = 0; i < 100; i++) {
   enemyBoard.append(anotherSingleField);
 }
 
+function renderPlayerShips() {
+  const allFieldsPlayer = Array.from(
+    document.querySelectorAll(".player .single-field")
+  );
+  const flatPlayerBoard = player.ownBoard.grid.flat();
+  allFieldsPlayer.forEach((field, i) => {
+    if (typeof flatPlayerBoard[i] === "object") field.textContent = "⛴️";
+  });
+}
+
+renderPlayerShips();
+
 // Testing
 function testShipCreation() {
   const ship = createShip(3);
