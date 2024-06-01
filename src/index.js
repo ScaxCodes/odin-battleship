@@ -55,32 +55,45 @@ function populateBoardsWithShips() {
 }
 
 populateBoardsWithShips();
-console.log(player.ownBoard.grid);
-console.log(enemy.ownBoard.grid);
 
 const playerBoard = document.querySelector(".board.player");
 const enemyBoard = document.querySelector(".board.enemy");
 
-for (let i = 0; i < 100; i++) {
-  const singleField = document.createElement("div");
-  singleField.classList.add("single-field");
-  const anotherSingleField = document.createElement("div");
-  anotherSingleField.classList.add("single-field");
-  playerBoard.append(singleField);
-  enemyBoard.append(anotherSingleField);
+function populateBoardsDOM() {
+  for (let i = 0; i < 100; i++) {
+    const singleField = document.createElement("div");
+    singleField.classList.add("single-field");
+    const anotherSingleField = document.createElement("div");
+    anotherSingleField.classList.add("single-field");
+    playerBoard.append(singleField);
+    enemyBoard.append(anotherSingleField);
+  }
 }
 
-function renderPlayerShips() {
-  const allFieldsPlayer = Array.from(
-    document.querySelectorAll(".player .single-field")
-  );
+populateBoardsDOM();
+
+function renderShips(player) {
+  let allFieldsOfPlayer;
+  if (player.type === "real") {
+    allFieldsOfPlayer = Array.from(
+      document.querySelectorAll(".player .single-field")
+    );
+  } else {
+    allFieldsOfPlayer = Array.from(
+      document.querySelectorAll(".enemy .single-field")
+    );
+  }
+
   const flatPlayerBoard = player.ownBoard.grid.flat();
-  allFieldsPlayer.forEach((field, i) => {
-    if (typeof flatPlayerBoard[i] === "object") field.textContent = "⛴️";
+  allFieldsOfPlayer.forEach((field, i) => {
+    if (flatPlayerBoard[i].sunken) field.textContent = "❌";
+    else if (typeof flatPlayerBoard[i] === "object") field.textContent = "⛴️";
+    console.log(flatPlayerBoard[i]);
   });
 }
 
-renderPlayerShips();
+renderShips(player);
+// renderShips(enemy);
 
 // Testing
 function testShipCreation() {
