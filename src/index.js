@@ -95,6 +95,42 @@ function renderShips(player) {
 renderShips(player);
 // renderShips(enemy);
 
+// Eins nach dem anderen, kleine Schrite, erstmal alles klickbar lassen
+// Step by step concept was hier passieren soll...
+// Filter alle raus, die nicht klickbar sein sollen
+// 1. feuer, X, missed shots
+// Event: Wenn Treffer; 1. Feuer adden, 2. Hitfunktion, 3. Rendern
+// eigene func dafür schreiben und als clalback dem eventlistener passen, sieht schlanker aus
+// wo lasse ich die eventlisteners laden? immer wieder beim rendern macht keinen sinn? einmal bei start langt?
+
+function AddClickListenersToEnemyFields() {
+  const fields = Array.from(document.querySelectorAll(".enemy .single-field"));
+  const flatEnemyBoard = enemy.ownBoard.grid.flat();
+  // Use receiveAttack function of object!!!
+  // Give Coords as datafields to html element
+  fields.forEach((field, i) => {
+    field.addEventListener("click", () => {
+      if (flatEnemyBoard[i].sunken === false) {
+        console.log("Unsunken ship found...");
+        flatEnemyBoard[i].hit();
+        // checkForSinking(flatEnemyBoard[i]);
+        field.textContent = "🔥";
+      } else if (flatEnemyBoard[i] === 0) {
+        console.log("Empty field found...");
+        field.textContent = "🌊";
+      }
+    });
+  });
+}
+
+function checkForSinking(ship) {
+  if (ship.isSunk) {
+    ship.sunken = true;
+  }
+}
+
+AddClickListenersToEnemyFields();
+
 // Testing
 function testShipCreation() {
   const ship = createShip(3);
