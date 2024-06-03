@@ -111,10 +111,12 @@ function AddClickListenersToEnemyFields() {
   fields.forEach((field, i) => {
     field.addEventListener("click", () => {
       if (flatEnemyBoard[i].sunken === false) {
+        const ship = flatEnemyBoard[i];
         console.log("Unsunken ship found...");
-        flatEnemyBoard[i].hit();
-        // checkForSinking(flatEnemyBoard[i]);
+        ship.hit();
         field.textContent = "🔥";
+        checkForSinking(ship);
+        if (ship.sunken) RenderSunkenShip(ship);
       } else if (flatEnemyBoard[i] === 0) {
         console.log("Empty field found...");
         field.textContent = "🌊";
@@ -124,9 +126,18 @@ function AddClickListenersToEnemyFields() {
 }
 
 function checkForSinking(ship) {
-  if (ship.isSunk) {
+  if (ship.isSunk()) {
+    console.log("Ship was sunk...");
     ship.sunken = true;
   }
+}
+
+function RenderSunkenShip(ship) {
+  const fields = Array.from(document.querySelectorAll(".enemy .single-field"));
+  const flatEnemyBoard = enemy.ownBoard.grid.flat();
+  fields.forEach((field, i) => {
+    if (flatEnemyBoard[i] === ship) field.textContent = "☠️";
+  });
 }
 
 AddClickListenersToEnemyFields();
