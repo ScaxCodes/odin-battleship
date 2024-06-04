@@ -2,6 +2,7 @@ import "./normalize.css";
 import "./styles.css";
 
 import { createShip, createBoard, createPlayer } from "./factories.js";
+import { renderBoards, renderShips } from "./render.js";
 
 const player = createPlayer();
 const enemy = createPlayer("computer");
@@ -55,42 +56,7 @@ function populateBoardsWithShips() {
 }
 
 populateBoardsWithShips();
-
-const playerBoard = document.querySelector(".board.player");
-const enemyBoard = document.querySelector(".board.enemy");
-
-function populateBoardsDOM() {
-  for (let i = 0; i < 100; i++) {
-    const singleField = document.createElement("div");
-    singleField.classList.add("single-field");
-    const anotherSingleField = document.createElement("div");
-    anotherSingleField.classList.add("single-field");
-    playerBoard.append(singleField);
-    enemyBoard.append(anotherSingleField);
-  }
-}
-
-populateBoardsDOM();
-
-function renderShips(player) {
-  let allFieldsOfPlayer;
-  if (player.type === "real") {
-    allFieldsOfPlayer = Array.from(
-      document.querySelectorAll(".player .single-field")
-    );
-  } else {
-    allFieldsOfPlayer = Array.from(
-      document.querySelectorAll(".enemy .single-field")
-    );
-  }
-
-  const flatPlayerBoard = player.ownBoard.grid.flat();
-  allFieldsOfPlayer.forEach((field, i) => {
-    if (flatPlayerBoard[i].sunken) field.textContent = "❌";
-    else if (typeof flatPlayerBoard[i] === "object") field.textContent = "⛴️";
-    console.log(flatPlayerBoard[i]);
-  });
-}
+renderBoards();
 
 renderShips(player);
 // renderShips(enemy);
@@ -116,11 +82,11 @@ function AddClickListenersToEnemyFields() {
         ship.hit();
         field.textContent = "🔥";
         checkForSinking(ship);
-        if (ship.sunken) RenderSunkenShip(ship);
       } else if (flatEnemyBoard[i] === 0) {
         console.log("Empty field found...");
         field.textContent = "🌊";
       }
+      renderShips(enemy);
     });
   });
 }
@@ -130,14 +96,6 @@ function checkForSinking(ship) {
     console.log("Ship was sunk...");
     ship.sunken = true;
   }
-}
-
-function RenderSunkenShip(ship) {
-  const fields = Array.from(document.querySelectorAll(".enemy .single-field"));
-  const flatEnemyBoard = enemy.ownBoard.grid.flat();
-  fields.forEach((field, i) => {
-    if (flatEnemyBoard[i] === ship) field.textContent = "☠️";
-  });
 }
 
 AddClickListenersToEnemyFields();
@@ -190,7 +148,7 @@ function testAllShipsSunken() {
   console.log(board.allShipsSunken());
 }
 
-function testenemyCreation() {
+function testEnemyCreation() {
   const axel = createPlayer();
   console.log(axel);
   const npc = createPlayer("computer");
