@@ -35,13 +35,17 @@ export function createBoard() {
       console.log("Ship placed...");
     },
     receiveAttack: function ({ x, y }) {
-      const selectedField = this.grid[x][y];
+      const selectedField = this.grid[y][x];
       if (typeof selectedField === "object") {
+        if (selectedField.sunken) return;
         selectedField.hit();
         console.log("Hit!");
-      } else {
-        this.grid[x][y] = "X";
+        checkForSinking(selectedField);
+        return "hit";
+      } else if (selectedField !== "X") {
+        this.grid[y][x] = "X";
         console.log("Miss!");
+        return "miss";
       }
     },
     allShipsSunken: function () {
@@ -62,4 +66,11 @@ export function createPlayer(type = "real") {
     ownBoard: createBoard(),
     enemyBoard: createBoard(),
   };
+}
+
+function checkForSinking(ship) {
+  if (ship.isSunk()) {
+    console.log("Ship was sunk...");
+    ship.sunken = true;
+  }
 }
