@@ -2,14 +2,20 @@ const playerBoard = document.querySelector(".board.player");
 const enemyBoard = document.querySelector(".board.enemy");
 
 export function renderBoards() {
-  for (let i = 0; i < 100; i++) {
-    const singleField = document.createElement("div");
-    singleField.classList.add("single-field");
-    const anotherSingleField = document.createElement("div");
-    anotherSingleField.classList.add("single-field");
-    playerBoard.append(singleField);
-    enemyBoard.append(anotherSingleField);
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      playerBoard.append(createSingleField(j, i));
+      enemyBoard.append(createSingleField(j, i));
+    }
   }
+}
+
+function createSingleField(x, y) {
+  const field = document.createElement("div");
+  field.classList.add("single-field");
+  field.dataset.x = x;
+  field.dataset.y = y;
+  return field;
 }
 
 export function renderShips(player) {

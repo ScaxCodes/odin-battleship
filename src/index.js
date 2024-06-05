@@ -72,6 +72,7 @@ renderShips(player);
 function AddClickListenersToEnemyFields() {
   const fields = Array.from(document.querySelectorAll(".enemy .single-field"));
   const flatEnemyBoard = enemy.ownBoard.grid.flat();
+  // TODO NEXT:
   // Use receiveAttack function of object!!!
   // Give Coords as datafields to html element
   fields.forEach((field, i) => {
