@@ -62,7 +62,7 @@ renderBoards();
 renderShips(player);
 // renderShips(enemy);
 
-loadEventListeners(enemy);
+loadEventListeners(enemy, player);
 
 // Testing
 function testShipCreation() {
