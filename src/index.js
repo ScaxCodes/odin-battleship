@@ -60,15 +60,22 @@ populateBoardsWithShips();
 renderBoards();
 
 renderShips(player);
-// renderShips(enemy);
 
 loadEventListeners(enemy, player);
 
 export function isGameOver() {
-  // console.log(enemy.ownBoard.allShipsSunken, player.ownBoard.allShipsSunken);
-  return enemy.ownBoard.allShipsSunken() || player.ownBoard.allShipsSunken()
-    ? true
-    : false;
+  if (enemy.ownBoard.allShipsSunken()) {
+    displayWinner("Player");
+    return true;
+  } else if (player.ownBoard.allShipsSunken()) {
+    displayWinner("Computer");
+    return true;
+  } else return false;
+}
+
+export function displayWinner(str) {
+  const infoBox = document.querySelector(".infobox");
+  infoBox.textContent = `${str} has won the game!`;
 }
 
 // Testing
