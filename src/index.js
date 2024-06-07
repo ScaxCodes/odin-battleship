@@ -64,6 +64,13 @@ renderShips(player);
 
 loadEventListeners(enemy, player);
 
+export function isGameOver() {
+  // console.log(enemy.ownBoard.allShipsSunken, player.ownBoard.allShipsSunken);
+  return enemy.ownBoard.allShipsSunken() || player.ownBoard.allShipsSunken()
+    ? true
+    : false;
+}
+
 // Testing
 function testShipCreation() {
   const ship = createShip(3);

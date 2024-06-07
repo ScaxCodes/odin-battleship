@@ -1,4 +1,5 @@
 import { renderShips } from "./render";
+import { isGameOver } from "./index";
 
 export function loadEventListeners(enemy, player) {
   const fields = Array.from(document.querySelectorAll(".enemy .single-field"));
@@ -6,8 +7,10 @@ export function loadEventListeners(enemy, player) {
     field.addEventListener(
       "click",
       () => {
+        if (isGameOver()) return;
         performPlayerTurn(enemy, field);
         renderShips(enemy);
+        if (isGameOver()) return;
         performEnemyTurn(player);
         renderShips(player);
       },
