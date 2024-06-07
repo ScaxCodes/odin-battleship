@@ -6,9 +6,7 @@ export function loadEventListeners(enemy, player) {
     field.addEventListener(
       "click",
       () => {
-        const { x, y } = field.dataset;
-        const result = enemy.ownBoard.receiveAttack({ x, y });
-        renderAttackResult(result, field);
+        performPlayerTurn(enemy, field);
         renderShips(enemy);
         performEnemyTurn(player);
         renderShips(player);
@@ -18,8 +16,10 @@ export function loadEventListeners(enemy, player) {
   }
 }
 
-function renderAttackResult(result, field) {
-  result === "hit" ? (field.textContent = "🔥") : (field.textContent = "🌊");
+function performPlayerTurn(enemy, field) {
+  const { x, y } = field.dataset;
+  const result = enemy.ownBoard.receiveAttack({ x, y });
+  renderAttackResult(result, field);
 }
 
 function performEnemyTurn(player) {
@@ -36,4 +36,8 @@ function performEnemyTurn(player) {
 
   const result = player.ownBoard.receiveAttack({ x, y });
   renderAttackResult(result, field);
+}
+
+function renderAttackResult(result, field) {
+  result === "hit" ? (field.textContent = "🔥") : (field.textContent = "🌊");
 }
