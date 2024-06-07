@@ -30,10 +30,12 @@ export function renderShips(player) {
     );
   }
 
+  // Can this logic be improved (put somewhere else)?
   if (player.type === "real") {
     const flatPlayerBoard = player.ownBoard.grid.flat();
     allFieldsOfPlayer.forEach((field, i) => {
       if (flatPlayerBoard[i].sunken) field.textContent = "☠️";
+      else if (field.textContent === "🔥") return;
       else if (typeof flatPlayerBoard[i] === "object") field.textContent = "⛴️";
     });
   } else {
