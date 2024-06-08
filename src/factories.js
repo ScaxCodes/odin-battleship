@@ -30,7 +30,7 @@ export function createBoard() {
     placeShip: function (coordsArray) {
       const ship = createShip(coordsArray.length);
       coordsArray.forEach((coord) => {
-        this.grid[coord.x][coord.y] = ship;
+        this.grid[coord.y][coord.x] = ship;
       });
       console.log("Ship placed...");
     },

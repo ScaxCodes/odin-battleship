@@ -56,12 +56,54 @@ function populateBoardsWithShips() {
   ]);
 }
 
-populateBoardsWithShips();
+function placeRandomShips() {
+  // Place 2 field ship
+  // 1. Randomize horizontal / vertical
+  // 2. Pick a position
+  //  For horizontal: Pick x between 0 - 8 (0 and boardlength - shiplength), pick random y
+  //  For vertical: Pick y between ^, pick random x
+  const isHorizontal = Math.random() >= 0.5;
+  const boardSize = player.ownBoard.grid.length;
+  const shipLength = 2;
+  const maxPosition = boardSize - shipLength;
+  const x = Math.floor(Math.random() * (maxPosition + 1));
+  const y = Math.floor(Math.random() * boardSize);
+
+  player.ownBoard.placeShip([
+    { x, y },
+    { x: x + 1, y },
+  ]);
+
+  // Place 3 field ship
+
+  // Place 4 field ship
+
+  // Place 5 field ship
+}
+
+placeRandomShips();
+
+// populateBoardsWithShips();
+
+// player.ownBoard.placeShip([
+//   { x: 0, y: 0 },
+//   { x: 0, y: 1 },
+// ]);
+
+enemy.ownBoard.placeShip([
+  { x: 6, y: 0 },
+  { x: 6, y: 1 },
+]);
+
 renderBoards();
 
 renderShips(player);
 
 loadEventListeners(enemy, player);
+
+// TODO-NEXT
+// Place ships of enemy into random positions
+// Let player choose positions for their ships (shuffle random positions)
 
 export function isGameOver() {
   if (enemy.ownBoard.allShipsSunken()) {
