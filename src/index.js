@@ -56,40 +56,38 @@ function populateBoardsWithShips() {
   ]);
 }
 
-function placeRandomShips() {
-  // Place 2 field ship
-  // 1. Randomize horizontal / vertical
-  // 2. Pick a position
-  //  For horizontal: Pick x between 0 - 8 (0 and boardlength - shiplength), pick random y
-  //  For vertical: Pick y between ^, pick random x
+function placeRandomShip(player, shipLength) {
   const isHorizontal = Math.random() >= 0.5;
   const boardSize = player.ownBoard.grid.length;
-  const shipLength = 2;
   const maxPosition = boardSize - shipLength;
-  const x = Math.floor(Math.random() * (maxPosition + 1));
-  const y = Math.floor(Math.random() * boardSize);
+  const coordsArray = [];
 
-  player.ownBoard.placeShip([
-    { x, y },
-    { x: x + 1, y },
-  ]);
+  if (isHorizontal) {
+    const x = Math.floor(Math.random() * (maxPosition + 1));
+    const y = Math.floor(Math.random() * boardSize);
 
-  // Place 3 field ship
+    for (let offset = 0; offset < shipLength; offset++) {
+      coordsArray.push({ x: x + offset, y });
+    }
+  } else {
+    const y = Math.floor(Math.random() * (maxPosition + 1));
+    const x = Math.floor(Math.random() * boardSize);
 
-  // Place 4 field ship
-
-  // Place 5 field ship
+    for (let offset = 0; offset < shipLength; offset++) {
+      coordsArray.push({ x, y: y + offset });
+    }
+  }
+  player.ownBoard.placeShip(coordsArray);
 }
 
-placeRandomShips();
+placeRandomShip(player, 2);
+placeRandomShip(player, 3);
+placeRandomShip(player, 4);
+placeRandomShip(player, 5);
 
 // populateBoardsWithShips();
 
-// player.ownBoard.placeShip([
-//   { x: 0, y: 0 },
-//   { x: 0, y: 1 },
-// ]);
-
+// For testing (so game doesn't end right at start)
 enemy.ownBoard.placeShip([
   { x: 6, y: 0 },
   { x: 6, y: 1 },
