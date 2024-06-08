@@ -56,25 +56,37 @@ function populateBoardsWithShips() {
   ]);
 }
 
+// TODO NEXT: REFACTOR CODE
 function placeRandomShip(player, shipLength) {
   const isHorizontal = Math.random() >= 0.5;
   const boardSize = player.ownBoard.grid.length;
   const maxPosition = boardSize - shipLength;
+  let overlapSwitch = 1;
   const coordsArray = [];
 
-  if (isHorizontal) {
-    const x = Math.floor(Math.random() * (maxPosition + 1));
-    const y = Math.floor(Math.random() * boardSize);
+  while (overlapSwitch === 1) {
+    if (isHorizontal) {
+      const x = Math.floor(Math.random() * (maxPosition + 1));
+      const y = Math.floor(Math.random() * boardSize);
 
-    for (let offset = 0; offset < shipLength; offset++) {
-      coordsArray.push({ x: x + offset, y });
+      for (let offset = 0; offset < shipLength; offset++) {
+        coordsArray.push({ x: x + offset, y });
+      }
+    } else {
+      const y = Math.floor(Math.random() * (maxPosition + 1));
+      const x = Math.floor(Math.random() * boardSize);
+
+      for (let offset = 0; offset < shipLength; offset++) {
+        coordsArray.push({ x, y: y + offset });
+      }
     }
-  } else {
-    const y = Math.floor(Math.random() * (maxPosition + 1));
-    const x = Math.floor(Math.random() * boardSize);
-
-    for (let offset = 0; offset < shipLength; offset++) {
-      coordsArray.push({ x, y: y + offset });
+    // Check board for each position
+    for (const coord of coordsArray) {
+      if (typeof player.ownBoard.grid[coord.y][coord.x] === "object") {
+        overlapSwitch = 1;
+        coordsArray.length = 0;
+        break;
+      } else overlapSwitch = 0;
     }
   }
   player.ownBoard.placeShip(coordsArray);
@@ -85,13 +97,9 @@ placeRandomShip(player, 3);
 placeRandomShip(player, 4);
 placeRandomShip(player, 5);
 
-// populateBoardsWithShips();
+placeRandomShip(enemy, 5);
 
-// For testing (so game doesn't end right at start)
-enemy.ownBoard.placeShip([
-  { x: 6, y: 0 },
-  { x: 6, y: 1 },
-]);
+// populateBoardsWithShips();
 
 renderBoards();
 
@@ -99,7 +107,7 @@ renderShips(player);
 
 loadEventListeners(enemy, player);
 
-// TODO-NEXT
+// TODO
 // Place ships of enemy into random positions
 // Let player choose positions for their ships (shuffle random positions)
 
