@@ -44,6 +44,20 @@ function placeRandomShip(player, shipLength) {
   player.ownBoard.placeShip(coordsArray);
 }
 
+placeRandomShip(player, 2);
+placeRandomShip(player, 3);
+placeRandomShip(player, 4);
+placeRandomShip(player, 5);
+
+placeRandomShip(enemy, 2);
+placeRandomShip(enemy, 3);
+placeRandomShip(enemy, 4);
+placeRandomShip(enemy, 5);
+
+renderBoards();
+
+renderShips(player);
+
 function resetPlayerBoard() {
   player.ownBoard.grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -66,24 +80,19 @@ function resetPlayerBoard() {
   renderShips(player);
 }
 
-placeRandomShip(player, 2);
-placeRandomShip(player, 3);
-placeRandomShip(player, 4);
-placeRandomShip(player, 5);
-
-placeRandomShip(enemy, 2);
-placeRandomShip(enemy, 3);
-placeRandomShip(enemy, 4);
-placeRandomShip(enemy, 5);
-
-renderBoards();
-
-renderShips(player);
-
-loadEventListeners(enemy, player);
-
 const shuffleButton = document.querySelector(".btn-randomize");
 shuffleButton.addEventListener("click", resetPlayerBoard);
+
+function startGame() {
+  loadEventListeners(enemy, player);
+  shuffleButton.classList.add("disabled");
+  startGameButton.classList.add("disabled");
+  shuffleButton.removeEventListener("click", resetPlayerBoard);
+  startGameButton.removeEventListener("click", startGame);
+}
+
+const startGameButton = document.querySelector(".btn-start");
+startGameButton.addEventListener("click", startGame);
 
 // TODO
 // Let player choose positions for their ships (shuffle random positions)

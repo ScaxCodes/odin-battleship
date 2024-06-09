@@ -25,6 +25,15 @@ button:hover {
   background-color: #ddd;
 }
 
+.disabled {
+  opacity: 0.2;
+}
+
+.disabled:hover {
+  cursor: initial;
+  background-color: #efefef;
+}
+
 .boards-container {
   display: flex;
   gap: 20px;
