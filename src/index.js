@@ -2,7 +2,7 @@ import "./normalize.css";
 import "./styles.css";
 
 import { createShip, createBoard, createPlayer } from "./factories.js";
-import { renderBoards, renderShips } from "./render.js";
+import { renderBoards, clearPlayerBoard, renderShips } from "./render.js";
 import { loadEventListeners } from "./eventlisteners.js";
 
 const player = createPlayer();
@@ -44,6 +44,28 @@ function placeRandomShip(player, shipLength) {
   player.ownBoard.placeShip(coordsArray);
 }
 
+function resetPlayerBoard() {
+  player.ownBoard.grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
+  placeRandomShip(player, 2);
+  placeRandomShip(player, 3);
+  placeRandomShip(player, 4);
+  placeRandomShip(player, 5);
+
+  clearPlayerBoard();
+  renderShips(player);
+}
+
 placeRandomShip(player, 2);
 placeRandomShip(player, 3);
 placeRandomShip(player, 4);
@@ -60,8 +82,10 @@ renderShips(player);
 
 loadEventListeners(enemy, player);
 
+const shuffleButton = document.querySelector(".btn-randomize");
+shuffleButton.addEventListener("click", resetPlayerBoard);
+
 // TODO
-// Place ships of enemy into random positions
 // Let player choose positions for their ships (shuffle random positions)
 
 export function isGameOver() {

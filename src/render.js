@@ -10,6 +10,15 @@ export function renderBoards() {
   }
 }
 
+export function clearPlayerBoard() {
+  const allFieldsOfPlayer = Array.from(
+    playerBoard.querySelectorAll(".single-field")
+  );
+  for (const field of allFieldsOfPlayer) {
+    field.textContent = "";
+  }
+}
+
 function createSingleField(x, y) {
   const field = document.createElement("div");
   field.classList.add("single-field");
