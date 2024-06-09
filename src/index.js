@@ -58,6 +58,9 @@ renderBoards();
 
 renderShips(player);
 
+// TODO NEXT: Clean up code / module approach for listeners and logic
+// THEN: Smart computer turns when ship is hit
+
 function resetPlayerBoard() {
   player.ownBoard.grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -93,9 +96,6 @@ function startGame() {
 
 const startGameButton = document.querySelector(".btn-start");
 startGameButton.addEventListener("click", startGame);
-
-// TODO
-// Let player choose positions for their ships (shuffle random positions)
 
 export function isGameOver() {
   if (enemy.ownBoard.allShipsSunken()) {

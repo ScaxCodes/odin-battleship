@@ -26,6 +26,15 @@ function performPlayerTurn(enemy, field) {
 }
 
 function performEnemyTurn(player) {
+  const [result, field] = randomShotAI(player);
+  renderAttackResult(result, field);
+}
+
+function renderAttackResult(result, field) {
+  result === "hit" ? (field.textContent = "🔥") : (field.textContent = "🌊");
+}
+
+function randomShotAI(player) {
   const playerFields = Array.from(
     document.querySelectorAll(".player .single-field")
   );
@@ -37,10 +46,7 @@ function performEnemyTurn(player) {
   const field = availableFields[randomArrayIndex];
   const { x, y } = field.dataset;
 
-  const result = player.ownBoard.receiveAttack({ x, y });
-  renderAttackResult(result, field);
+  return [player.ownBoard.receiveAttack({ x, y }), field];
 }
 
-function renderAttackResult(result, field) {
-  result === "hit" ? (field.textContent = "🔥") : (field.textContent = "🌊");
-}
+function targetShotAI(player) {}
