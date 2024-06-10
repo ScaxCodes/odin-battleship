@@ -26,8 +26,13 @@ function performPlayerTurn(enemy, field) {
 }
 
 function performEnemyTurn(player) {
-  const [result, field] = randomShotAI(player);
-  renderAttackResult(result, field);
+  if (!shipUnderAttack(player)) {
+    const [result, field] = randomShotAI(player);
+    renderAttackResult(result, field);
+  } else {
+    const [result, field] = targetShotAI(player);
+    renderAttackResult(result, field);
+  }
 }
 
 function renderAttackResult(result, field) {
@@ -49,4 +54,42 @@ function randomShotAI(player) {
   return [player.ownBoard.receiveAttack({ x, y }), field];
 }
 
-function targetShotAI(player) {}
+function targetShotAI(player) {
+  const playerFields = Array.from(
+    document.querySelectorAll(".player .single-field")
+  );
+  const attackedShipFields = playerFields.filter(
+    (field) => field.textContent === "🔥"
+  );
+  const smartAttackCoords = [];
+  if (attackedShipFields.length === 1) {
+    let { x, y } = attackedShipFields[0].dataset;
+    x = Number(x);
+    y = Number(y);
+    if (x > 0) smartAttackCoords.push({ x: x - 1, y });
+    if (x < 9) smartAttackCoords.push({ x: x + 1, y });
+    if (y > 0) smartAttackCoords.push({ x, y: y - 1 });
+    if (y < 9) smartAttackCoords.push({ x, y: y + 1 });
+  }
+  // Problem: Need to check if fields are available for attack (aka not clicked yet)
+  // Problem 2: Handle case when there are more than 1 attackedShipFields
+
+  const randomArrayIndex = Math.floor(Math.random() * smartAttackCoords.length);
+  const field = playerFields.filter(
+    (field) =>
+      field.dataset.x == smartAttackCoords[randomArrayIndex].x &&
+      field.dataset.y == smartAttackCoords[randomArrayIndex].y
+  );
+  console.log(smartAttackCoords[randomArrayIndex], field);
+  return [
+    player.ownBoard.receiveAttack(smartAttackCoords[randomArrayIndex]),
+    field[0],
+  ];
+}
+
+function shipUnderAttack(player) {
+  allFieldsOfPlayer = Array.from(
+    document.querySelectorAll(".player .single-field")
+  );
+  return allFieldsOfPlayer.some((field) => field.textContent === "🔥");
+}
