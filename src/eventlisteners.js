@@ -62,8 +62,9 @@ function targetShotAI(player) {
     (field) => field.textContent === "🔥"
   );
   const smartAttackCoords = [];
-  if (attackedShipFields.length === 1) {
-    let { x, y } = attackedShipFields[0].dataset;
+  // if (attackedShipFields.length === 1) {}
+  for (const field of attackedShipFields) {
+    let { x, y } = field.dataset;
     x = Number(x);
     y = Number(y);
     if (x > 0) smartAttackCoords.push({ x: x - 1, y });
@@ -71,19 +72,51 @@ function targetShotAI(player) {
     if (y > 0) smartAttackCoords.push({ x, y: y - 1 });
     if (y < 9) smartAttackCoords.push({ x, y: y + 1 });
   }
+
+  const filteredSmartAttackCoords = smartAttackCoords.filter((coord) =>
+    isValidAttackField(coord)
+  );
+  console.log("Array:", smartAttackCoords);
+  console.log("Filtered:", filteredSmartAttackCoords);
+
+  function isValidAttackField(coord) {
+    const { x, y } = coord;
+    const fieldToCheck = document.querySelector(
+      `[data-x="${x}"][data-y="${y}"]`
+    );
+    if (fieldToCheck.textContent === "" || fieldToCheck.textContent === "⛴️")
+      return true;
+    else return false;
+  }
+
+  // TODO NEXT: Infobox UX
   // Problem: Need to check if fields are available for attack (aka not clicked yet)
   // Problem 2: Handle case when there are more than 1 attackedShipFields
+  //    Write a step by step guide in pseudo code how the AI should perform in this case
+  // 1. Entscheide dich für eine Richtung
+  //    2. Falls hit, gehe diese Richtung weiter bis kein hit
+  //        3. Falls kein hit, gehe in die entgegengesetzte Richtung
+  //    4. Falls kein hit, gehe in eine der anderen Richtungen
 
-  const randomArrayIndex = Math.floor(Math.random() * smartAttackCoords.length);
+  // array mit den 4 richtungen, das resettet wird sobald ein schiff versenkt ist
+
+  // fehleranfällig für direkt angrenzende schiffe, wie lösen?
+  //    wenn richtungen leer, dann wieder auffällen mit allen richtungen. fixed?
+
+  // hier abbrechen und als feature aufnehmen?
+
+  const randomArrayIndex = Math.floor(
+    Math.random() * filteredSmartAttackCoords.length
+  );
   const field = playerFields.filter(
     (field) =>
-      field.dataset.x == smartAttackCoords[randomArrayIndex].x &&
-      field.dataset.y == smartAttackCoords[randomArrayIndex].y
-  );
-  console.log(smartAttackCoords[randomArrayIndex], field);
+      field.dataset.x == filteredSmartAttackCoords[randomArrayIndex].x &&
+      field.dataset.y == filteredSmartAttackCoords[randomArrayIndex].y
+  )[0];
+  console.log(filteredSmartAttackCoords[randomArrayIndex], field);
   return [
-    player.ownBoard.receiveAttack(smartAttackCoords[randomArrayIndex]),
-    field[0],
+    player.ownBoard.receiveAttack(filteredSmartAttackCoords[randomArrayIndex]),
+    field,
   ];
 }
 
