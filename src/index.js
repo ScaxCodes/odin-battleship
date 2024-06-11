@@ -2,11 +2,18 @@ import "./normalize.css";
 import "./styles.css";
 
 import { createShip, createBoard, createPlayer } from "./factories.js";
-import { renderBoards, clearPlayerBoard, renderShips } from "./render.js";
+import {
+  renderBoards,
+  clearPlayerBoard,
+  clearEnemyBoard,
+  renderShips,
+} from "./render.js";
 import { loadEventListeners } from "./eventlisteners.js";
 
-const player = createPlayer();
-const enemy = createPlayer("computer");
+let player;
+let enemy;
+const shuffleButton = document.querySelector(".btn-randomize");
+const startGameButton = document.querySelector(".btn-start");
 
 function placeRandomShip(player, shipLength) {
   const isHorizontal = Math.random() >= 0.5;
@@ -44,15 +51,22 @@ function placeRandomShip(player, shipLength) {
   player.ownBoard.placeShip(coordsArray);
 }
 
-placeRandomShip(player, 2);
-placeRandomShip(player, 3);
-placeRandomShip(player, 4);
-placeRandomShip(player, 5);
+function prepareGame() {
+  player = createPlayer();
+  enemy = createPlayer("computer");
 
-placeRandomShip(enemy, 2);
-placeRandomShip(enemy, 3);
-placeRandomShip(enemy, 4);
-placeRandomShip(enemy, 5);
+  placeRandomShip(player, 2);
+  placeRandomShip(player, 3);
+  placeRandomShip(player, 4);
+  placeRandomShip(player, 5);
+
+  placeRandomShip(enemy, 2);
+  placeRandomShip(enemy, 3);
+  placeRandomShip(enemy, 4);
+  placeRandomShip(enemy, 5);
+}
+
+prepareGame();
 
 renderBoards();
 
@@ -82,8 +96,13 @@ function resetPlayerBoard() {
   renderShips(player);
 }
 
-const shuffleButton = document.querySelector(".btn-randomize");
-shuffleButton.addEventListener("click", resetPlayerBoard);
+function loadShuffleButtonEventListener() {
+  const shuffleButton = document.querySelector(".btn-randomize");
+  shuffleButton.addEventListener("click", resetPlayerBoard);
+}
+
+loadShuffleButtonEventListener();
+loadStartGameEventListener();
 
 function startGame() {
   loadEventListeners(enemy, player);
@@ -91,18 +110,23 @@ function startGame() {
   startGameButton.classList.add("disabled");
   shuffleButton.removeEventListener("click", resetPlayerBoard);
   startGameButton.removeEventListener("click", startGame);
+  startGameButton.removeEventListener("click", resetGame);
   setTextInfoBox("Click on the fields of the right board to perform an attack");
 }
 
-const startGameButton = document.querySelector(".btn-start");
-startGameButton.addEventListener("click", startGame);
+function loadStartGameEventListener() {
+  const startGameButton = document.querySelector(".btn-start");
+  startGameButton.addEventListener("click", startGame);
+}
 
 export function isGameOver() {
   if (enemy.ownBoard.allShipsSunken()) {
     displayWinner("Player");
+    prepareForGameReset();
     return true;
   } else if (player.ownBoard.allShipsSunken()) {
     displayWinner("Computer");
+    prepareForGameReset();
     return true;
   } else return false;
 }
@@ -110,6 +134,24 @@ export function isGameOver() {
 function displayWinner(str) {
   const infoBox = document.querySelector(".infobox");
   infoBox.textContent = `${str} has won the game!`;
+}
+
+function prepareForGameReset() {
+  startGameButton.classList.remove("disabled");
+  startGameButton.textContent = "Restart Game!";
+  startGameButton.addEventListener("click", resetGame);
+}
+
+function resetGame() {
+  prepareGame();
+  clearPlayerBoard();
+  clearEnemyBoard();
+  renderShips(player);
+  setTextInfoBox("Please shuffle ship positions or start the game");
+  startGameButton.textContent = "Start Game!";
+  loadStartGameEventListener();
+  shuffleButton.classList.remove("disabled");
+  loadShuffleButtonEventListener();
 }
 
 function setTextInfoBox(str) {

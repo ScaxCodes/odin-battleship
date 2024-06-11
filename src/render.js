@@ -19,6 +19,15 @@ export function clearPlayerBoard() {
   }
 }
 
+export function clearEnemyBoard() {
+  const allFieldsOfEnemy = Array.from(
+    enemyBoard.querySelectorAll(".single-field")
+  );
+  for (const field of allFieldsOfEnemy) {
+    field.textContent = "";
+  }
+}
+
 function createSingleField(x, y) {
   const field = document.createElement("div");
   field.classList.add("single-field");
