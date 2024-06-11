@@ -18,6 +18,7 @@ export function loadEventListeners(enemy, player) {
         if (isGameOver()) return;
         performEnemyTurn(player);
         renderShips(player);
+        isGameOver();
       },
       { once: true }
     );

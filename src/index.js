@@ -58,8 +58,7 @@ renderBoards();
 
 renderShips(player);
 
-// TODO NEXT: Clean up code / module approach for listeners and logic
-// THEN: Smart computer turns when ship is hit
+setTextInfoBox("Please shuffle ship positions or start the game");
 
 function resetPlayerBoard() {
   player.ownBoard.grid = [
@@ -92,6 +91,7 @@ function startGame() {
   startGameButton.classList.add("disabled");
   shuffleButton.removeEventListener("click", resetPlayerBoard);
   startGameButton.removeEventListener("click", startGame);
+  setTextInfoBox("Click on the fields of the right board to perform an attack");
 }
 
 const startGameButton = document.querySelector(".btn-start");
@@ -107,62 +107,12 @@ export function isGameOver() {
   } else return false;
 }
 
-export function displayWinner(str) {
+function displayWinner(str) {
   const infoBox = document.querySelector(".infobox");
   infoBox.textContent = `${str} has won the game!`;
 }
 
-// Testing
-function testShipCreation() {
-  const ship = createShip(3);
-  ship.hit();
-  console.log(ship);
-  ship.hit();
-  console.log(ship.isSunk());
-  ship.hit();
-  console.log(ship);
-  console.log(ship.isSunk());
-}
-
-function testBoardCreation() {
-  const board = createBoard();
-  console.log(board.grid);
-
-  const board2 = createBoard();
-  board2.placeShip([
-    { x: 3, y: 5 },
-    { x: 3, y: 6 },
-    { x: 3, y: 7 },
-  ]);
-  console.log(board2.grid);
-}
-
-function testReceiveAttack() {
-  const board = createBoard();
-  board.placeShip([
-    { x: 5, y: 6 },
-    { x: 5, y: 7 },
-  ]);
-  console.log(board.grid[5][6]);
-  board.receiveAttack({ x: 5, y: 6 });
-  board.receiveAttack({ x: 5, y: 2 });
-  console.log(board.grid);
-}
-
-function testAllShipsSunken() {
-  const board = createBoard();
-  board.placeShip([
-    { x: 5, y: 6 },
-    { x: 5, y: 7 },
-  ]);
-  board.receiveAttack({ x: 5, y: 6 });
-  // board.receiveAttack({ x: 5, y: 7 });
-  console.log(board.allShipsSunken());
-}
-
-function testEnemyCreation() {
-  const axel = createPlayer();
-  console.log(axel);
-  const npc = createPlayer("computer");
-  console.log(npc);
+function setTextInfoBox(str) {
+  const infoBox = document.querySelector(".infobox");
+  infoBox.textContent = str;
 }
