@@ -4,11 +4,15 @@ import "./styles.css";
 import { createShip, createBoard, createPlayer } from "./factories.js";
 import {
   renderBoards,
+  removeBoards,
   clearPlayerBoard,
   clearEnemyBoard,
   renderShips,
 } from "./render.js";
 import { loadEventListeners } from "./eventlisteners.js";
+
+// TODO: export in modules and refactor index.js
+// TODO: simple responsive design
 
 let player;
 let enemy;
@@ -110,7 +114,6 @@ function startGame() {
   startGameButton.classList.add("disabled");
   shuffleButton.removeEventListener("click", resetPlayerBoard);
   startGameButton.removeEventListener("click", startGame);
-  startGameButton.removeEventListener("click", resetGame);
   setTextInfoBox("Click on the fields of the right board to perform an attack");
 }
 
@@ -144,14 +147,15 @@ function prepareForGameReset() {
 
 function resetGame() {
   prepareGame();
-  clearPlayerBoard();
-  clearEnemyBoard();
+  removeBoards();
+  renderBoards();
   renderShips(player);
   setTextInfoBox("Please shuffle ship positions or start the game");
   startGameButton.textContent = "Start Game!";
   loadStartGameEventListener();
   shuffleButton.classList.remove("disabled");
   loadShuffleButtonEventListener();
+  startGameButton.removeEventListener("click", resetGame);
 }
 
 function setTextInfoBox(str) {

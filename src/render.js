@@ -10,6 +10,11 @@ export function renderBoards() {
   }
 }
 
+export function removeBoards() {
+  playerBoard.innerHTML = "";
+  enemyBoard.innerHTML = "";
+}
+
 export function clearPlayerBoard() {
   const allFieldsOfPlayer = Array.from(
     playerBoard.querySelectorAll(".single-field")
