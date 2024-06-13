@@ -34,21 +34,11 @@ button:hover {
   background-color: #efefef;
 }
 
-/* .headlines-container {
-  display: flex;
-  gap: 20px;
-}
-
-.board-headline {
-  width: 420px;
-  text-align: center;
-  font-weight: bold;
-} */
-
 .headline {
   text-align: center;
   font-weight: bold;
   margin-bottom: 8px;
+  width: 420px;
 }
 
 .boards-container {
