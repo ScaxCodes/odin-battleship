@@ -193,7 +193,7 @@ main {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
 }
 
@@ -276,6 +276,11 @@ button:hover {
 
   .infobox {
     width: 100vw;
+  }
+
+  main {
+    height: fit-content;
+    margin: 20px 0;
   }
 
   button {
