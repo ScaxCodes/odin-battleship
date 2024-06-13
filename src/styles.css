@@ -99,6 +99,10 @@ button:hover {
     width: 100vw;
   }
 
+  .headline {
+    width: 340px;
+  }
+
   main {
     height: fit-content;
     margin: 20px 0px;
