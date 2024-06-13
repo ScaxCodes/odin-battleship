@@ -43,19 +43,27 @@ export function renderShipFields(player) {
       document.querySelectorAll(".enemy .single-field")
     );
   }
+  const flatPlayerBoard = player.ownBoard.grid.flat();
 
   if (player.type === "real") {
-    const flatPlayerBoard = player.ownBoard.grid.flat();
     allFieldsOfPlayer.forEach((field, i) => {
-      if (flatPlayerBoard[i].sunken) field.textContent = "☠️";
+      if (flatPlayerBoard[i].sunken)
+        renderSunkenBoard(flatPlayerBoard, field, i);
       else if (field.textContent === "🔥") return;
       else if (typeof flatPlayerBoard[i] === "object") field.textContent = "⛴️";
     });
   } else {
-    const flatEnemyBoard = player.ownBoard.grid.flat();
     allFieldsOfPlayer.forEach((field, i) => {
-      if (flatEnemyBoard[i].sunken) field.textContent = "☠️";
+      if (flatPlayerBoard[i].sunken)
+        renderSunkenBoard(flatPlayerBoard, field, i);
     });
+  }
+
+  function renderSunkenBoard(flatPlayerBoard, field, i) {
+    if (flatPlayerBoard[i].sunken) {
+      field.textContent = "☠️";
+      field.classList.add("sunken-ship");
+    }
   }
 }
 

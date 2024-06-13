@@ -64,3 +64,11 @@ button:hover {
   width: 860px;
   text-align: center;
 }
+
+.exposed-water {
+  background-color: #e9f2ff;
+}
+
+.sunken-ship {
+  background-color: #ddd;
+}

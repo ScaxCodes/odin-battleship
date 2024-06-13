@@ -52,5 +52,10 @@ function performEnemyTurn(player) {
 }
 
 function renderAttackResult(result, field) {
-  result === "hit" ? (field.textContent = "🔥") : (field.textContent = "🌊");
+  if (result === "hit") {
+    field.textContent = "🔥";
+  } else {
+    field.textContent = "🌊";
+    field.classList.add("exposed-water");
+  }
 }
