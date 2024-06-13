@@ -8,7 +8,7 @@ main {
   align-items: center;
   justify-content: center;
   gap: 20px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 button {
@@ -90,6 +90,11 @@ button:hover {
 
   .infobox {
     width: 100vw;
+  }
+
+  main {
+    height: fit-content;
+    margin: 20px 0px;
   }
 
   button {
