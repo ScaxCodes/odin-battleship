@@ -24,15 +24,6 @@ export function clearPlayerBoard() {
   }
 }
 
-export function clearEnemyBoard() {
-  const allFieldsOfEnemy = Array.from(
-    enemyBoard.querySelectorAll(".single-field")
-  );
-  for (const field of allFieldsOfEnemy) {
-    field.textContent = "";
-  }
-}
-
 function createSingleField(x, y) {
   const field = document.createElement("div");
   field.classList.add("single-field");
@@ -41,19 +32,18 @@ function createSingleField(x, y) {
   return field;
 }
 
-export function renderShips(player) {
+export function renderShipFields(player) {
   let allFieldsOfPlayer;
   if (player.type === "real") {
     allFieldsOfPlayer = Array.from(
       document.querySelectorAll(".player .single-field")
     );
-  } else {
+  } else if (player.type === "computer") {
     allFieldsOfPlayer = Array.from(
       document.querySelectorAll(".enemy .single-field")
     );
   }
 
-  // Can this logic be improved (put somewhere else)?
   if (player.type === "real") {
     const flatPlayerBoard = player.ownBoard.grid.flat();
     allFieldsOfPlayer.forEach((field, i) => {
@@ -67,4 +57,14 @@ export function renderShips(player) {
       if (flatEnemyBoard[i].sunken) field.textContent = "☠️";
     });
   }
+}
+
+export function setTextInfoBox(str) {
+  const infoBox = document.querySelector(".infobox");
+  infoBox.textContent = str;
+}
+
+export function displayWinner(str) {
+  const infoBox = document.querySelector(".infobox");
+  infoBox.textContent = `${str} has won the game!`;
 }

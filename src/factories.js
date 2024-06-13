@@ -64,7 +64,6 @@ export function createPlayer(type = "real") {
   return {
     type: type,
     ownBoard: createBoard(),
-    enemyBoard: createBoard(),
   };
 }
 

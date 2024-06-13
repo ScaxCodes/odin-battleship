@@ -1,12 +1,22 @@
-import { renderShips } from "./render";
-import { isGameOver } from "./index";
+import { renderShipFields } from "./render";
+import { resetPlayerBoard, startGame, isGameOver } from "./index";
 import {
   randomShotAI,
   targetShotAI,
   shipUnderAttack,
 } from "./computerAttackLogic";
 
-export function loadEventListeners(enemy, player) {
+export function loadShuffleButtonEventListener() {
+  const shuffleButton = document.querySelector(".btn-randomize");
+  shuffleButton.addEventListener("click", resetPlayerBoard);
+}
+
+export function loadStartGameEventListener() {
+  const startGameButton = document.querySelector(".btn-start");
+  startGameButton.addEventListener("click", startGame);
+}
+
+export function loadBoardEventListeners(enemy, player) {
   const fields = Array.from(document.querySelectorAll(".enemy .single-field"));
   for (const field of fields) {
     field.addEventListener(
@@ -14,10 +24,10 @@ export function loadEventListeners(enemy, player) {
       () => {
         if (isGameOver()) return;
         performPlayerTurn(enemy, field);
-        renderShips(enemy);
+        renderShipFields(enemy);
         if (isGameOver()) return;
         performEnemyTurn(player);
-        renderShips(player);
+        renderShipFields(player);
         isGameOver();
       },
       { once: true }

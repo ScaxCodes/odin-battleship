@@ -1,25 +1,56 @@
 import "./normalize.css";
 import "./styles.css";
 
-import { createShip, createBoard, createPlayer } from "./factories.js";
+import { createPlayer } from "./factories.js";
 import {
   renderBoards,
   removeBoards,
   clearPlayerBoard,
-  clearEnemyBoard,
-  renderShips,
+  renderShipFields,
+  setTextInfoBox,
+  displayWinner,
 } from "./render.js";
-import { loadEventListeners } from "./eventlisteners.js";
+import {
+  loadShuffleButtonEventListener,
+  loadStartGameEventListener,
+  loadBoardEventListeners,
+} from "./eventlisteners.js";
 
-// TODO: export in modules and refactor index.js
 // TODO: simple responsive design
+// TODO: Schiffe und andere felder nochmal bisschen anders stylen -> bessere UX
+//    Totenköpfe/Schiffe weiss, alle anderen Felder leicht grau (sobald gehittet/geclickt)
 
 let player;
 let enemy;
+
 const shuffleButton = document.querySelector(".btn-randomize");
 const startGameButton = document.querySelector(".btn-start");
 
-function placeRandomShip(player, shipLength) {
+prepareGame();
+
+renderBoards();
+renderShipFields(player);
+setTextInfoBox("Please shuffle ship positions or start the game");
+
+loadShuffleButtonEventListener();
+loadStartGameEventListener();
+
+function prepareGame() {
+  player = createPlayer();
+  enemy = createPlayer("computer");
+
+  placeShipRandomPosition(player, 2);
+  placeShipRandomPosition(player, 3);
+  placeShipRandomPosition(player, 4);
+  placeShipRandomPosition(player, 5);
+
+  placeShipRandomPosition(enemy, 2);
+  placeShipRandomPosition(enemy, 3);
+  placeShipRandomPosition(enemy, 4);
+  placeShipRandomPosition(enemy, 5);
+}
+
+function placeShipRandomPosition(player, shipLength) {
   const isHorizontal = Math.random() >= 0.5;
   const boardSize = player.ownBoard.grid.length;
   const maxPosition = boardSize - shipLength;
@@ -55,30 +86,26 @@ function placeRandomShip(player, shipLength) {
   player.ownBoard.placeShip(coordsArray);
 }
 
-function prepareGame() {
-  player = createPlayer();
-  enemy = createPlayer("computer");
-
-  placeRandomShip(player, 2);
-  placeRandomShip(player, 3);
-  placeRandomShip(player, 4);
-  placeRandomShip(player, 5);
-
-  placeRandomShip(enemy, 2);
-  placeRandomShip(enemy, 3);
-  placeRandomShip(enemy, 4);
-  placeRandomShip(enemy, 5);
+function prepareForGameReset() {
+  startGameButton.classList.remove("disabled");
+  startGameButton.textContent = "Restart Game!";
+  startGameButton.addEventListener("click", resetGame);
 }
 
-prepareGame();
+function resetGame() {
+  prepareGame();
+  removeBoards();
+  renderBoards();
+  renderShipFields(player);
+  setTextInfoBox("Please shuffle ship positions or start the game");
+  startGameButton.textContent = "Start Game!";
+  loadStartGameEventListener();
+  shuffleButton.classList.remove("disabled");
+  loadShuffleButtonEventListener();
+  startGameButton.removeEventListener("click", resetGame);
+}
 
-renderBoards();
-
-renderShips(player);
-
-setTextInfoBox("Please shuffle ship positions or start the game");
-
-function resetPlayerBoard() {
+export function resetPlayerBoard() {
   player.ownBoard.grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -91,35 +118,22 @@ function resetPlayerBoard() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
-  placeRandomShip(player, 2);
-  placeRandomShip(player, 3);
-  placeRandomShip(player, 4);
-  placeRandomShip(player, 5);
+  placeShipRandomPosition(player, 2);
+  placeShipRandomPosition(player, 3);
+  placeShipRandomPosition(player, 4);
+  placeShipRandomPosition(player, 5);
 
   clearPlayerBoard();
-  renderShips(player);
+  renderShipFields(player);
 }
 
-function loadShuffleButtonEventListener() {
-  const shuffleButton = document.querySelector(".btn-randomize");
-  shuffleButton.addEventListener("click", resetPlayerBoard);
-}
-
-loadShuffleButtonEventListener();
-loadStartGameEventListener();
-
-function startGame() {
-  loadEventListeners(enemy, player);
+export function startGame() {
+  loadBoardEventListeners(enemy, player);
   shuffleButton.classList.add("disabled");
   startGameButton.classList.add("disabled");
   shuffleButton.removeEventListener("click", resetPlayerBoard);
   startGameButton.removeEventListener("click", startGame);
   setTextInfoBox("Click on the fields of the right board to perform an attack");
-}
-
-function loadStartGameEventListener() {
-  const startGameButton = document.querySelector(".btn-start");
-  startGameButton.addEventListener("click", startGame);
 }
 
 export function isGameOver() {
@@ -132,33 +146,4 @@ export function isGameOver() {
     prepareForGameReset();
     return true;
   } else return false;
-}
-
-function displayWinner(str) {
-  const infoBox = document.querySelector(".infobox");
-  infoBox.textContent = `${str} has won the game!`;
-}
-
-function prepareForGameReset() {
-  startGameButton.classList.remove("disabled");
-  startGameButton.textContent = "Restart Game!";
-  startGameButton.addEventListener("click", resetGame);
-}
-
-function resetGame() {
-  prepareGame();
-  removeBoards();
-  renderBoards();
-  renderShips(player);
-  setTextInfoBox("Please shuffle ship positions or start the game");
-  startGameButton.textContent = "Start Game!";
-  loadStartGameEventListener();
-  shuffleButton.classList.remove("disabled");
-  loadShuffleButtonEventListener();
-  startGameButton.removeEventListener("click", resetGame);
-}
-
-function setTextInfoBox(str) {
-  const infoBox = document.querySelector(".infobox");
-  infoBox.textContent = str;
 }
