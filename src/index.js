@@ -17,8 +17,6 @@ import {
 } from "./eventlisteners.js";
 
 // TODO: simple responsive design
-// TODO: Schiffe und andere felder nochmal bisschen anders stylen -> bessere UX
-//    Totenköpfe/Schiffe weiss, alle anderen Felder leicht grau (sobald gehittet/geclickt)
 
 let player;
 let enemy;

@@ -72,3 +72,28 @@ button:hover {
 .sunken-ship {
   background-color: #ddd;
 }
+
+@media (max-width: 900px) {
+  .boards-container {
+    flex-direction: column;
+  }
+
+  .board {
+    grid-template-columns: repeat(10, 32px);
+    grid-template-rows: repeat(10, 32px);
+  }
+
+  .single-field {
+    width: 32px;
+    height: 32px;
+  }
+
+  .infobox {
+    width: 100vw;
+  }
+
+  button {
+    width: 175px;
+    margin: 0;
+  }
+}
