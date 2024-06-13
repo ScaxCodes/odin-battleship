@@ -797,7 +797,7 @@ function startGame() {
     startGameButton.classList.add("disabled");
     shuffleButton.removeEventListener("click", resetPlayerBoard);
     startGameButton.removeEventListener("click", startGame);
-    (0, _renderJs.setTextInfoBox)("Click on the fields of the right board to perform an attack");
+    (0, _renderJs.setTextInfoBox)("Click on computers board to perform an attack");
 }
 function isGameOver() {
     if (enemy.ownBoard.allShipsSunken()) {

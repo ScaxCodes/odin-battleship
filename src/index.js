@@ -131,7 +131,7 @@ export function startGame() {
   startGameButton.classList.add("disabled");
   shuffleButton.removeEventListener("click", resetPlayerBoard);
   startGameButton.removeEventListener("click", startGame);
-  setTextInfoBox("Click on the fields of the right board to perform an attack");
+  setTextInfoBox("Click on computers board to perform an attack");
 }
 
 export function isGameOver() {

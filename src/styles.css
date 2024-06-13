@@ -7,7 +7,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
   min-height: 100vh;
 }
 
@@ -32,6 +32,23 @@ button:hover {
 .disabled:hover {
   cursor: initial;
   background-color: #efefef;
+}
+
+/* .headlines-container {
+  display: flex;
+  gap: 20px;
+}
+
+.board-headline {
+  width: 420px;
+  text-align: center;
+  font-weight: bold;
+} */
+
+.headline {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .boards-container {
