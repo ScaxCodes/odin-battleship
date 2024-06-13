@@ -222,6 +222,7 @@ button:hover {
 
 .headline {
   text-align: center;
+  width: 420px;
   margin-bottom: 8px;
   font-weight: bold;
 }
