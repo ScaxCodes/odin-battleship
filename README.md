@@ -36,6 +36,7 @@ Das Spiel ist eine Implementierung des klassischen Schiffeversenken-Spiels. Es b
 - **Bessere Visualisierung bei einem Sieg**, z.B. Konfetti-Regen oder andere Animationen.
 - **Einbau von Sound oder weiteren Animationen** bei der Durchführung von Angriffen.
 - **Unterschiedliche Darstellung der Schiffe**, je nach Größe.
+- **Bessere Verwaltung der Event-Listener**, da diese nach Neustart des Spiels nicht vollständig entfernt werden.
 
 ## Technologien
 
